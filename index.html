@@ -63,19 +63,24 @@
     <div></div>
   </div>
 
- <script>
-  const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbzvZbztedC6ip8W4ohru79cj3QXu-2C6aQOsa3xFjHiQmVbT61ugTN_l8vjxXKBbaGKhA/exec
+<script>
+  const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbzvZbztedC6ip8W4ohru79cj3QXu-2C6aQOsa3xFjHiQmVbT61ugTN_l8vjxXKBbaGKhA/exec";
 
   const k = new URLSearchParams(window.location.search).get("k");
+  const msg = document.createElement("p");
+  document.body.appendChild(msg);
 
-  if (k) {
+  if (!k) {
+    msg.textContent = "Falta el parámetro ?k= en la URL";
+  } else {
     fetch(AS_URL_BASE + "?k=" + encodeURIComponent(k))
       .then(r => r.text())
-      .then(url => {
-        url = url.trim();
-        if (url.startsWith("http")) window.location.replace(url);
+      .then(t => {
+        t = t.trim();
+        if (t.startsWith("http")) window.location.replace(t);
+        else msg.textContent = "Clave no encontrada: " + k;
       })
-      .catch(err => console.error(err));
+      .catch(err => { msg.textContent = "Error: " + err; });
   }
 </script>
 

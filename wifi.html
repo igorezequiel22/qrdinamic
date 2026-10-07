@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>WiFi</title>
+  <style>
+    * { box-sizing: border-box; }
+    html, body { height: 100%; margin: 0; }
+    body {
+      display: flex; align-items: center; justify-content: center;
+      background: linear-gradient(160deg, #cfe9ff 0%, #8ec5f5 100%);
+      font-family: "Segoe UI", system-ui, Arial, sans-serif; padding: 20px;
+    }
+    .card {
+      background: #fff; color: #0b3a66; border-radius: 20px; text-align: center;
+      padding: 28px 22px; width: 100%; max-width: 380px;
+      box-shadow: 0 10px 30px rgba(0, 60, 120, 0.25);
+    }
+    .icon { font-size: 2.6rem; }
+    h1 { margin: 6px 0 18px; font-size: 1.4rem; }
+    .field { text-align: left; margin-bottom: 14px; }
+    label { font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #5b7d9e; }
+    .val {
+      margin-top: 4px; padding: 12px 14px; background: #eef6ff; border-radius: 12px;
+      font-size: 1.15rem; font-weight: 600; word-break: break-all;
+    }
+    button {
+      width: 100%; padding: 13px; border: 0; border-radius: 12px;
+      background: #2f8fe8; color: #fff; font-size: 1rem; font-weight: 600; cursor: pointer;
+    }
+    .hint { margin-top: 14px; font-size: 0.85rem; color: #5b7d9e; }
+  </style>
+</head>
+<body>
+  <div class="card">
+    <div class="icon">📶</div>
+    <h1>Conéctate al WiFi</h1>
+    <div class="field"><label>Red</label><div class="val" id="ssid"></div></div>
+    <div class="field"><label>Contraseña</label><div class="val" id="pass"></div></div>
+    <button id="copy">Copiar contraseña</button>
+    <div class="hint">Ve a los ajustes de WiFi de tu celular, elige la red y pega la contraseña.</div>
+  </div>
+
+  <script>
+    const p = new URLSearchParams(window.location.search);
+    const s = p.get("s") || "";
+    const pw = p.get("p") || "";
+    document.getElementById("ssid").textContent = s;
+    document.getElementById("pass").textContent = pw || "(sin contraseña)";
+    document.getElementById("copy").onclick = function () {
+      const b = this;
+      const done = () => { b.textContent = "¡Copiada!"; setTimeout(() => b.textContent = "Copiar contraseña", 2000); };
+      if (navigator.clipboard) navigator.clipboard.writeText(pw).then(done).catch(done);
+      else done();
+    };
+  </script>
+</body>
+</html>

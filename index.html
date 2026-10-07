@@ -63,18 +63,21 @@
     <div></div>
   </div>
 
-  <script>
-    const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbxr93MLy1BOm02NE34hMuELv0U_WGNr1aNO_QdruA1hgG1f1bP7V5Hrl0c60XDeTUf0qQ/exec";
+ <script>
+  const AS_URL_BASE = "https://script.google.com/macros/s/AKfycbxr93MLy1BOm02NE34hMuELv0U_WGNr1aNO_QdruA1hgG1f1bP7V5Hrl0c60XDeTUf0qQ/exec";
 
-    const params = new URLSearchParams(window.location.search);
-    const k = params.get("k");
+  const k = new URLSearchParams(window.location.search).get("k");
 
-    if (k) {
-      window.location.replace(
-        AS_URL_BASE + "?k=" + encodeURIComponent(k)
-      );
-    }
-  </script>
+  if (k) {
+    fetch(AS_URL_BASE + "?k=" + encodeURIComponent(k))
+      .then(r => r.text())
+      .then(url => {
+        url = url.trim();
+        if (url.startsWith("http")) window.location.replace(url);
+      })
+      .catch(err => console.error(err));
+  }
+</script>
 
 </body>
 </html>
